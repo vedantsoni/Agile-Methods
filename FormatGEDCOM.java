@@ -1,3 +1,8 @@
+/*
+Name: Deepu Variyangattil, Nisheet Thakur, Sushil Saladi, Vedant Soni
+Group: Group 5
+Github Link: https://github.com/deepuvariyangattil/Agile-Methods/blob/master/FormatGEDCOM.java
+*/
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -64,10 +69,12 @@ public class FormatGEDCOM {
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         try {
             while ((filedata = bufferedReader.readLine()) != null) {
-                //System.out.println(filedata);
+               
                 values = new String[]{name, sex, birthDate, Integer.toString(age), alive, deathDate, child, spouse};
+				//Printing Last individual memeber in GEDCOM file
                 if (filedata.contains(charSequenceFamily) && filedata.startsWith("0")) {
                     count = 0;
+					//Checking individual count is less than 5000
                     if(individualMap.size()<5000){
                         individualMap.put(individualID.replace("@", "").trim(), values);
                     }
@@ -78,6 +85,7 @@ public class FormatGEDCOM {
 
 
                     if (individualID != null) {
+						//Checking individual count is less than 5000
                         if(individualMap.size()<5000){
                             individualMap.put(individualID.replace("@", "").trim(), values);
                         }
@@ -98,7 +106,7 @@ public class FormatGEDCOM {
                     date = "";
                     spouse = "";
                     child = "";
-
+					// Identifiying individual ID and keeping it as Hashmap key.
 
                     dateDet = new Date();
                     lineArray = filedata.split(" ");
@@ -109,7 +117,7 @@ public class FormatGEDCOM {
 
                 } else if (filedata.contains(charSequenceIndividual) == false && count == 1) {
                     lineArray2 = filedata.split(" ");
-
+					//Calculating date fields and age.
                     if (lineArray2[0].equalsIgnoreCase("2")) {
                         keywordMatch_2 = keywordMatcher(lineArray2[0], lineArray2[1]);
                         if (keywordMatch_2) {
@@ -133,7 +141,7 @@ public class FormatGEDCOM {
                             } else if (dateField == 2) {
                                 deathDate = date;
                                 date = "";
-                                //System.out.println(deathDate);
+                                //Calculating death date.
                                 dateDet = new SimpleDateFormat("ddMMMyyyy").parse(deathDate);
                                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                                 deathDate = dateFormat.format(dateDet);
@@ -148,6 +156,7 @@ public class FormatGEDCOM {
 
                         }
                     } else if (lineArray2[0].equalsIgnoreCase("1")) {
+						//Finding individual attributes such as Name, Sex,Spouse ID, children IDs
                         keywordMatch_2 = keywordMatcher(lineArray2[0], lineArray2[1]);
                         if (keywordMatch_2) {
                             if (lineArray2[1].equalsIgnoreCase("BIRT")) {
@@ -158,15 +167,15 @@ public class FormatGEDCOM {
                                 for (int i = 2; i < lineArray2.length; i++) {
                                     name = name + lineArray2[i];
                                 }
-                                //System.out.println("Name is " + name);
+                                
                             } else if (lineArray2[1].equalsIgnoreCase("SEX")) {
                                 sex = lineArray2[2];
-                                //System.out.println("Sex is " + sex);
+                                
                             } else if (lineArray2[1].equalsIgnoreCase("FAMS")) {
                                 String spouseArray[] = new String[100];
                                 spouseArray = filedata.split(" ");
                                 spouse = spouse + " " + spouseArray[2].replace("@", "").trim();
-                                // System.out.println("Spouse is : "+spouse);
+                                
 
                             } else if (lineArray2[1].equalsIgnoreCase("FAMC")) {
                                 String childArray[] = new String[100];
@@ -176,12 +185,15 @@ public class FormatGEDCOM {
 
                         }
                     }
-                } else if ((filedata.contains(charSequenceFamily) && filedata.startsWith("0")) || filedata.contains("TRLR")) {
+                } 
+				//Forming Family table
+				else if ((filedata.contains(charSequenceFamily) && filedata.startsWith("0")) || filedata.contains("TRLR")) {
                     familyValues = new String[]{marriageDate, divorseDate, husbandID, husbandName, wifeID, wifeName, childID};
                     familyArray1 = filedata.split(" ");
 
 
                     if (familyID != null) {
+						//Checking family count is less than 1000
                         if(FamilyMap.size()<1000)
                         {
                             FamilyMap.put(familyID, familyValues);
@@ -198,9 +210,10 @@ public class FormatGEDCOM {
                     divorseDate = "";
                     familyCount = 1;
                     date = "";
+					//Finding family ID
                     familyID = familyArray1[1].replace("@", "").trim();
-                    //System.out.println("Family IUD is "+familyID);
-
+                    
+					//Finding family attributes
                 } else if (filedata.contains(charSequenceFamily) == false && familyCount == 1) {
                     familyArray2 = filedata.split(" ");
                     if (keywordMatcherFamily(familyArray2[0], familyArray2[1])) {
@@ -240,7 +253,7 @@ public class FormatGEDCOM {
                             if (familyDatePick == 2) {
                                 divorseDate = "";
                                 divorseDate = findDate(date);
-                                // System.out.println(divorseDate);
+                                
                             }
 
                         }
@@ -255,11 +268,13 @@ public class FormatGEDCOM {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+		//Closing file readers.
         fileReader.close();
         bufferedReader.close();
         String[] temp = new String[100];
         String[] set = new String[1000];
         set = individualMap.keySet().toArray(new String[0]);
+		//Printing hashmaps data in tabular format.
         System.out.println("\n\n Individual\n\n");
         System.out.println("ID           NAME               GENDER     BIRTHDAY       AGE       ALIVE         DEATH      CHILD      SPOUSE");
         System.out.println("==       ============           ======      ========      ===       =====        ========    =====      ======");
@@ -295,7 +310,9 @@ public class FormatGEDCOM {
 
 
     }
-
+/*
+FindDate function used to convert input date into desired format
+*/
     private static String findDate(String dateString) throws ParseException {
         Date date = new Date();
         String formattedDate;
@@ -305,7 +322,7 @@ public class FormatGEDCOM {
         return formattedDate;
 
     }
-
+//Finding correct tag and level match for individual
     private static boolean keywordMatcherFamily(String level, String tag) {
         String[] validKeyWords_2 = new String[100];
         if (level.equalsIgnoreCase("1")) {
@@ -327,7 +344,7 @@ public class FormatGEDCOM {
         }
         return result;
     }
-
+//Finding correct tag and level match for family
     private static boolean keywordMatcher(String level, String tag) {
 
         String[] validKeyWords_2 = new String[100];
