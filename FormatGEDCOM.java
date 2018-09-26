@@ -68,14 +68,20 @@ public class FormatGEDCOM {
                 values = new String[]{name, sex, birthDate, Integer.toString(age), alive, deathDate, child, spouse};
                 if (filedata.contains(charSequenceFamily) && filedata.startsWith("0")) {
                     count = 0;
-                    individualMap.put(individualID.replace("@", "").trim(), values);
+                    if(individualMap.size()<5000){
+                        individualMap.put(individualID.replace("@", "").trim(), values);
+                    }
+
                 }
 
                 if (filedata.contains(charSequenceIndividual)) {
 
 
                     if (individualID != null) {
-                        individualMap.put(individualID.replace("@", "").trim(), values);
+                        if(individualMap.size()<5000){
+                            individualMap.put(individualID.replace("@", "").trim(), values);
+                        }
+
                     }
 
                     individualID_Old = individualID;
@@ -117,6 +123,7 @@ public class FormatGEDCOM {
                                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                                 birthDate = dateFormat.format(dateBir);
                                 int birthYear = dateBir.getYear();
+
                                 int currentYear = dateDet.getYear();
                                 age = currentYear - birthYear;
                                 alive = "True";
@@ -175,7 +182,11 @@ public class FormatGEDCOM {
 
 
                     if (familyID != null) {
-                        FamilyMap.put(familyID, familyValues);
+                        if(FamilyMap.size()<1000)
+                        {
+                            FamilyMap.put(familyID, familyValues);
+                        }
+
                     }
 
                     childID = "";
