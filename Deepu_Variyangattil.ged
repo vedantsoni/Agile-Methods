@@ -49,7 +49,7 @@
 2 _MARNM Thomas
 1 SEX F
 1 BIRT
-2 DATE 02 MAY 1985
+2 DATE 18 APR 1990
 1 FAMC @F2@
 0 @I6@ INDI
 1 NAME Sarah /Habber/
@@ -80,10 +80,10 @@
 2 DATE 4 MAR 1998
 1 FAMS @F7@
 0 @I9@ INDI
-1 NAME Tinu /Shinto/
+1 NAME Tinu /Francis/
 2 GIVN Tinu
-2 SURN Shinto
-2 _MARNM Shinto
+2 SURN Francis
+2 _MARNM Francis
 1 SEX F
 1 BIRT
 2 DATE 5 SEP 2001
